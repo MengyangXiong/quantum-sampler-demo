@@ -2,6 +2,7 @@
 # demo_quantum_sampler.py
 # Minimal "quantum sampler" demo using Qiskit Machine Learning (SamplerQNN) + PyTorch
 # Goal: learn a simple 2-qubit target distribution with a parameterized circuit
+# Notes: my first try.
 
 import math
 import numpy as np
