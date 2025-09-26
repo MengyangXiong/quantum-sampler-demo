@@ -22,7 +22,7 @@ python demo_quantum_sampler.py
 - Increase `reps` for a more expressive circuit, or tweak `epochs`/`lr`.
 - For more qubits: set a target of length `2**n` and the script infers `n` automatically.
 
-## 5) Talking points for your meeting
+## 5) Question solving
 - **API choice**: `SamplerQNN` (+ `TorchConnector`) from `qiskit-machine-learning` gives an out-of-the-box, differentiable quantum sampler.
 - **Why quantum?**: it replaces the classical noise/ sampler step with a trainable quantum process; easy to plug into a diffusion-like pipeline later.
 - **Where to go next**: add dissipative channels/Lindbladian steps and plug your reverse process (Petz map) on top of this training loop.
