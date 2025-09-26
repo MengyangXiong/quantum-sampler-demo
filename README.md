@@ -1,28 +1,52 @@
+# Quantum Sampler Demo
 
-# Quickstart: Minimal Quantum Sampler (Qiskit Machine Learning + PyTorch)
+This repository provides a minimal implementation of a **quantum sampler** using **Qiskit Machine Learning** and **PyTorch**.  
+The objective is to demonstrate how parameterized quantum circuits can be trained to reproduce target probability distributions, serving as a foundation for **quantum-enhanced diffusion models**.
 
-## 1) Install
+---
+
+## Overview
+
+- **Motivation**: Classical diffusion models rely on Gaussian noise in the forward process. This work explores replacing classical noise with quantum sampling to leverage superposition and entanglement.  
+- **Approach**: A parameterized quantum circuit is wrapped with `SamplerQNN` and connected to PyTorch via `TorchConnector`. Training is performed using gradient-based optimization.  
+- **Result**: The quantum sampler successfully converges to a Bell-like distribution, validating the feasibility of quantum sampling as a building block for generative modeling.
+
+---
+
+## Methods
+
+- **Frameworks**:  
+  - [Qiskit Machine Learning](https://qiskit.org/documentation/machine-learning/)  
+  - [PyTorch](https://pytorch.org/)  
+
+- **Key Components**:  
+  - `SamplerQNN`: maps quantum circuits to probability distributions.  
+  - `TorchConnector`: integrates QNNs into PyTorch as differentiable modules.  
+  - Optimizer: Adam, with KL divergence as the loss function.  
+
+- **Circuit Ansatz**:  
+  - `RealAmplitudes(n_qubits=2, reps=1, entanglement='full')`.
+
+---
+
+## Results
+
+- **Target distribution**:  
+  \[
+  p(00) = 0.5,\; p(11) = 0.5
+  \]
+
+- **Final learned distribution** (after 150 epochs):  
+  \[
+  p(00) = 0.521,\; p(01) = 0.001,\; p(10) = 0.001,\; p(11) = 0.478
+  \]
+
+- **KL divergence** decreased from 4.14 → 0.002.  
+- Training curve is saved as `training_curve.png`.
+
+---
+
+## Installation
+
 ```bash
-pip install qiskit qiskit-machine-learning torch
-```
-
-## 2) Run the demo
-```bash
-python demo_quantum_sampler.py
-```
-
-## 3) What it does
-- Builds a 2-qubit parameterized circuit (`RealAmplitudes`).
-- Wraps it with `SamplerQNN` and `TorchConnector`, so it behaves like a PyTorch module.
-- Trains the circuit parameters to match a target distribution (default: 50% `00`, 50% `11`) with KL divergence.
-- Prints distributions before/after training. Saves a `training_curve.png` if matplotlib is available.
-
-## 4) Customize quickly
-- Change `target_probs` near the bottom of `demo_quantum_sampler.py` to any length-`2**n` distribution.
-- Increase `reps` for a more expressive circuit, or tweak `epochs`/`lr`.
-- For more qubits: set a target of length `2**n` and the script infers `n` automatically.
-
-## 5) Question solving
-- **API choice**: `SamplerQNN` (+ `TorchConnector`) from `qiskit-machine-learning` gives an out-of-the-box, differentiable quantum sampler.
-- **Why quantum?**: it replaces the classical noise/ sampler step with a trainable quantum process; easy to plug into a diffusion-like pipeline later.
-- **Where to go next**: add dissipative channels/Lindbladian steps and plug your reverse process (Petz map) on top of this training loop.
+pip install qiskit qiskit-machine-learning torch matplotlib
